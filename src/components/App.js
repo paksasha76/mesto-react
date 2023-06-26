@@ -3,6 +3,7 @@ import Main from "./Main.js";
 import Footer from "./Footer.js";
 import PopupWithForm from "./PopupWithForm.js";
 import React from "react";
+import ImagePopup from "./ImagePopup.js"
 
 function App() {
   const [editAvatar, setEditAvatar] = React.useState(false);
@@ -23,6 +24,7 @@ function App() {
         <Header />
         <Main
           onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
         />
         <Footer />
         <PopupWithForm
@@ -57,6 +59,31 @@ function App() {
             </>
           }
         />
+        <ImagePopup />
+        <PopupWithForm name="add" title="Новое место" nameBtn="Сохранить" isOpen={addPlace} children={
+          <>
+            <input
+              id="title-input"
+              className="popup__input popup__input_type_title"
+              type="text"
+              name="name"
+              placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              required
+            />
+            <span className="popup__input-error title-input-error"></span>
+            <input
+              id="link-input"
+              className="popup__input popup__input_type_link"
+              type="url"
+              name="link"
+              placeholder="Ссылка на карточку"
+              required
+            />
+            <span className="popup__input-error link-input-error"></span>
+          </>
+        }/>
       </div>
 
 
