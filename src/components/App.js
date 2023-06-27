@@ -34,6 +34,8 @@ function App() {
     setEditAvatar(false);
     setEditProfile(false);
     setAddPlace(false);
+    setSelectedCard(null);
+    setIsDeletePopup(false);
   }
 
   return (
