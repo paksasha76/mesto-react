@@ -3,7 +3,7 @@ import Main from "./Main.js";
 import Footer from "./Footer.js";
 import PopupWithForm from "./PopupWithForm.js";
 import React from "react";
-import ImagePopup from "./ImagePopup.js"
+import ImagePopup from "./ImagePopup.js";
 
 function App() {
   const [editAvatar, setEditAvatar] = React.useState(false);
@@ -18,6 +18,13 @@ function App() {
   function handleAddPlaceClick() {
     setAddPlace(true);
   }
+
+  function closeAllPopups() {
+    setEditAvatar(false);
+    setEditProfile(false);
+    setAddPlace(false);
+  }
+
   return (
     <body className="root">
       <div className="page">
@@ -33,6 +40,7 @@ function App() {
           title="Редактировать профиль"
           nameBtn="Сохранить"
           isOpen={editProfile}
+          onClose={closeAllPopups} 
           children={
             <>
               <input
@@ -60,58 +68,60 @@ function App() {
             </>
           }
         />
-        <ImagePopup />
-        <PopupWithForm name="add" title="Новое место" nameBtn="Создать" isOpen={addPlace} children={
-          <>
-            <input
-              id="title-input"
-              className="popup__input popup__input_type_title"
-              type="text"
-              name="name"
-              placeholder="Название"
-              minlength="2"
-              maxlength="30"
-              required
-            />
-            <span className="popup__input-error title-input-error"></span>
-            <input
-              id="link-input"
-              className="popup__input popup__input_type_link"
-              type="url"
-              name="link"
-              placeholder="Ссылка на карточку"
-              required
-            />
-            <span className="popup__input-error link-input-error"></span>
-          </>
-        }/>
-          <PopupWithForm name="avatar" title="Обновить аватар" nameBtn="Сохранить" isOpen={editAvatar} children={<>
-            <input
-              id="avatar-input"
-              className="popup__input popup__input_type_avatar"
-              type="url"
-              name="avatar"
-              placeholder="Ссылка на аватар"
-              required
-            />
-            <span className="popup__input-error avatar-input-error"></span>
-          </>}/>
+        <ImagePopup onClose={closeAllPopups} />
+        <PopupWithForm
+          name="add"
+          title="Новое место"
+          nameBtn="Создать"
+          isOpen={addPlace}
+          onClose={closeAllPopups} 
+          children={
+            <>
+              <input
+                id="title-input"
+                className="popup__input popup__input_type_title"
+                type="text"
+                name="name"
+                placeholder="Название"
+                minlength="2"
+                maxlength="30"
+                required
+              />
+              <span className="popup__input-error title-input-error"></span>
+              <input
+                id="link-input"
+                className="popup__input popup__input_type_link"
+                type="url"
+                name="link"
+                placeholder="Ссылка на карточку"
+                required
+              />
+              <span className="popup__input-error link-input-error"></span>
+            </>
+          }
+        />
+        <PopupWithForm
+          name="avatar"
+          title="Обновить аватар"
+          nameBtn="Сохранить"
+          isOpen={editAvatar}
+          onClose={closeAllPopups} 
+          children={
+            <>
+              <input
+                id="avatar-input"
+                className="popup__input popup__input_type_avatar"
+                type="url"
+                name="avatar"
+                placeholder="Ссылка на аватар"
+                required
+              />
+              <span className="popup__input-error avatar-input-error"></span>
+            </>
+          }
+        />
+        <PopupWithForm name="confirm" title="Вы уверены?" nameBtn="Да" onClose={closeAllPopups} />
       </div>
-
-
-
-
-      <div className="popup popup_type_confirm">
-        <div className="popup__content">
-          <button className="popup__close-btn" type="button"></button>
-          <h3 className="popup__title">Вы уверены?</h3>
-          <button className="popup__yes-button" type="button">
-            Да
-          </button>
-        </div>
-      </div>
-
-  
 
       <template id="place-template">
         <li className="place">
