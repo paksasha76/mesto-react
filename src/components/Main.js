@@ -1,18 +1,23 @@
 import { api } from '../utils/Api';
 
-import React from "react"
+import React from "react";
+
+import Card from "./Card.js";;
 
 function Main(props) {
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getCards()]).then(
-      ([infoUser]) => {
+      ([infoUser, infoCard]) => {
         setUserAvatar(infoUser.avatar);
         setUserName(infoUser.name);
         setUserDescription(infoUser.about);
+        infoCard.forEach((card) => (card.myid = infoUser._id));
+        setCards(infoCard);
       }
     )
     .catch((error) => console.error(`Ошибка ${error}`))
@@ -36,7 +41,13 @@ function Main(props) {
     </section>
 
     <section className="cards">
-      <ul className="cards__list"></ul>
+      <ul className="cards__list">
+      {cards.map((data) => {
+            return (
+              <Card key={data._id} card={data} onCardClick={props.onCardClick} onCardDelete={props.onCardDelete} />
+          );
+        })}
+      </ul>
     </section>
   </main>)
 }

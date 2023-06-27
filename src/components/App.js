@@ -9,6 +9,17 @@ function App() {
   const [editAvatar, setEditAvatar] = React.useState(false);
   const [editProfile, setEditProfile] = React.useState(false);
   const [addPlace, setAddPlace] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [isDeletePopup, setIsDeletePopup] = React.useState(false);
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
+
+  function handleDeleteClick () {
+    setIsDeletePopup(true);
+  }
+
   function handleEditAvatarClick() {
     setEditAvatar(true);
   }
@@ -33,6 +44,8 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick}
+          onCardDelete ={handleDeleteClick }
         />
         <Footer />
         <PopupWithForm
@@ -68,7 +81,7 @@ function App() {
             </>
           }
         />
-        <ImagePopup onClose={closeAllPopups} />
+        <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
         <PopupWithForm
           name="add"
           title="Новое место"
@@ -120,22 +133,9 @@ function App() {
             </>
           }
         />
-        <PopupWithForm name="confirm" title="Вы уверены?" nameBtn="Да" onClose={closeAllPopups} />
+        <PopupWithForm name="confirm" title="Вы уверены?" nameBtn="Да" onClose={closeAllPopups}  isOpen={isDeletePopup}/>
       </div>
 
-      <template id="place-template">
-        <li className="place">
-          <img className="place__photo" src="#" alt="Фото карточки" />
-          <button className="place__delete-button" type="button"></button>
-          <div className="place__description">
-            <h2 className="place__title"></h2>
-            <div className="place__like-container">
-              <button className="place__like" type="button"></button>
-              <p className="place__like-counter">0</p>
-            </div>
-          </div>
-        </li>
-      </template>
     </body>
   );
 }
