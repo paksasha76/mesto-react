@@ -9,10 +9,6 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
     isLiked && "place__like_active"
   }`;
 
-  const cardDeleteButtonClassName = (
-    `card__del-button ${!isOwn && 'place__delete-button'}`
-  );
-
   function handleClick() {
     onCardClick(card)
   }
@@ -21,7 +17,7 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
     onCardLike(card);
   }
 
-  function handleCardDelete() {
+  function handleDeleteClick() {
     onCardDelete(card)
   }
 
@@ -35,9 +31,9 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
       />
       {isOwn && (
         <button
-          className={cardDeleteButtonClassName}
+          className="place__delete-button"
           type="button"
-          onClick={handleCardDelete}
+          onClick={handleDeleteClick}
         >
           {" "}
         </button>

@@ -2,19 +2,18 @@ import Header from "./Header.js";
 import {api} from "../utils/Api.js"
 import Main from "./Main.js";
 import Footer from "./Footer.js";
-import PopupWithForm from "./PopupWithForm.js";
 import React from "react";
 import ImagePopup from "./ImagePopup.js";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
+import AddPlacePopup from "./AddPlacePopup.js";
 
 function App() {
   const [editAvatar, setEditAvatar] = React.useState(false);
   const [editProfile, setEditProfile] = React.useState(false);
   const [addPlace, setAddPlace] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
-  const [isDeletePopup, setIsDeletePopup] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([])
 
@@ -32,10 +31,6 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleDeleteClick () {
-    setIsDeletePopup(true);
-  }
-
   function handleEditAvatarClick() {
     setEditAvatar(true);
   }
@@ -51,7 +46,6 @@ function App() {
     setEditProfile(false);
     setAddPlace(false);
     setSelectedCard(null);
-    setIsDeletePopup(false);
   }
 
 
@@ -100,6 +94,15 @@ function App() {
     });
   }
 
+  function handleAddPlaceSubmit(data) {
+    api.addCard(data).then((newCard) => {
+      setCards([newCard, ...cards]);
+      closeAllPopups();
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -111,7 +114,7 @@ function App() {
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
-          onCardDelete ={handleDeleteClick}
+          onCardDelete ={handleCardDelete}
           onCardLike={handleCardLike}
           cards={cards}
         />
@@ -120,39 +123,9 @@ function App() {
         <Footer />
        
         <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
-        <PopupWithForm
-          name="add"
-          title="Новое место"
-          nameBtn="Создать"
-          isOpen={addPlace}
-          onClose={closeAllPopups} 
-          children={
-            <>
-              <input
-                id="title-input"
-                className="popup__input popup__input_type_title"
-                type="text"
-                name="name"
-                placeholder="Название"
-                minlength="2"
-                maxlength="30"
-                required
-              />
-              <span className="popup__input-error title-input-error"></span>
-              <input
-                id="link-input"
-                className="popup__input popup__input_type_link"
-                type="url"
-                name="link"
-                placeholder="Ссылка на карточку"
-                required
-              />
-              <span className="popup__input-error link-input-error"></span>
-            </>
-          }
-        />
+        <AddPlacePopup  isOpen={addPlace} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
          <EditAvatarPopup  isOpen={editAvatar} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
-        <PopupWithForm name="confirm" title="Вы уверены?" nameBtn="Да" onClose={closeAllPopups}  isOpen={isDeletePopup} onCardDelete={handleCardDelete}/>
+   
       </div>
 
     </body>
