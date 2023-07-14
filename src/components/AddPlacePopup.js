@@ -46,8 +46,8 @@ function AddPlacePopup(props) {
               type="text"
               name="name"
               placeholder="Название"
-              minlength="2"
-              maxlength="30"
+              minLength="2"
+              maxLength="30"
               required
               value={title}
               onChange={handleTitleChange}
