@@ -75,6 +75,7 @@ export default class Api {
       }),
     }).then((res) => this._checkResponse(res));
   }
+  
 }
 
 export const api = new Api({
